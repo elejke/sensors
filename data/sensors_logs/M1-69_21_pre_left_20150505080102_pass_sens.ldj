@@ -1,0 +1,36 @@
+{"frame": 0, "sensors": {"right": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}}}
+{"frame": 177, "sensors": {"right": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}}}
+{"frame": 181, "sensors": {"right": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 185, "sensors": {"right": {"ref_pass": false, "cor": true, "shield": true, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 197, "sensors": {"right": {"cor": true, "shield": true, "ref_pass": true, "loop": false, "pass": false}, "left": {"cor": true, "shield": false, "ref_pass": true, "loop": false, "pass": false}}}
+{"frame": 199, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 200, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": false}}}
+{"frame": 207, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 222, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": true}}}
+{"frame": 224, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 257, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 268, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 302, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": true, "pass": false}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": true}}}
+{"frame": 303, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": true}}}
+{"frame": 304, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": false, "pass": true}}}
+{"frame": 315, "sensors": {"right": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": true}}}
+{"frame": 316, "sensors": {"right": {"cor": false, "shield": false, "ref_pass": false, "loop": false, "pass": false}, "left": {"cor": false, "shield": false, "ref_pass": false, "loop": false, "pass": true}}}
+{"frame": 327, "sensors": {"right": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}, "left": null}}
+{"frame": 328, "sensors": {"right": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}}}
+{"frame": 576, "sensors": {"right": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}}}
+{"frame": 578, "sensors": {"right": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 581, "sensors": {"right": {"ref_pass": false, "cor": true, "shield": true, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 592, "sensors": {"right": {"cor": true, "shield": true, "ref_pass": true, "loop": false, "pass": false}, "left": {"cor": true, "shield": false, "ref_pass": true, "loop": false, "pass": false}}}
+{"frame": 595, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 596, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": false}}}
+{"frame": 598, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 637, "sensors": {"right": {"ref_pass": true, "cor": true, "shield": false, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 646, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": true, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 658, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": true, "pass": true}}}
+{"frame": 659, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": false, "pass": true}}}
+{"frame": 664, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": true}, "left": null}}
+{"frame": 665, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": true}, "left": {"ref_pass": true, "cor": true, "shield": true, "loop": false, "pass": true}}}
+{"frame": 676, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": false, "pass": true}}}
+{"frame": 699, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": false}, "left": null}}
+{"frame": 700, "sensors": {"right": {"ref_pass": true, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": true, "cor": true, "shield": false, "loop": false, "pass": false}}}
+{"frame": 895, "sensors": {"right": {"ref_pass": false, "cor": false, "shield": false, "loop": false, "pass": false}, "left": {"ref_pass": false, "cor": true, "shield": false, "loop": false, "pass": false}}}
