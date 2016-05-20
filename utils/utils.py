@@ -1,26 +1,15 @@
 import numpy as np
-import matplotlib.pylab as plt
-
-import theano.tensor as tt
-
-from keras.objectives import MSE
 from pass_quality import approx_pq
-
-
-def plot_pq(y_true, y_pred, step=1024):
-    pqs = []
-    for i in range(len(y_true) / step):
-        pqs.append(approx_pq(y_true[:i * step + step], y_pred[:i * step + step])[0])
-
-    plt.plot(np.arange(len(y_true) / step), pqs)
 
 
 # post_processing
 def morphological_filter(y_pred, n_times):
     """
     Apply morphological filter to any series of 0 and 1
-    n_times: integer:
-        number of applies
+
+    :param y_pred:
+    :param n_times:
+    :return:
     """
     for i in range(n_times):
         y_pred = np.concatenate([
@@ -33,20 +22,26 @@ def morphological_filter(y_pred, n_times):
 
 
 def model_pq(threshold, y_pred, y_train, sm):
+    """
+    Smoothed model pass_quality function estimator.
+
+    :param threshold:
+    :param y_pred:
+    :param y_train:
+    :param sm:
+    :return:
+    """
     y_pred = (y_pred > threshold).astype(int).flatten()
     return -approx_pq(y_train, morphological_filter(y_pred, sm))[0]
 
 
-def regularized_mse(y_true, y_pred):
-    # compute Mean Squared Error:
-    mean_squared_error = MSE(y_true, y_pred)
-
-    mean_squared_gradient = tt.mean((tt.extra_ops.diff(y_pred.T[-1].T)) ** 2)
-
-    return mean_squared_error * (7. / 8) + mean_squared_gradient * (1. / 8)
-
-
 def init_weights(y_train):
+    """
+    Initialize weights for y_train for RNN training.
+
+    :param y_train:
+    :return:
+    """
     weights = np.zeros_like(y_train) + 0.4
     for ind in range(len(y_train[2:-2])):
         if y_train[ind] == 1 and y_train[ind - 1] == 0 and y_train[ind - 2] == 0:

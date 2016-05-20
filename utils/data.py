@@ -5,22 +5,7 @@ import json
 
 from pandas.io.json import json_normalize
 
-from numpy.random import permutation
-
-# from sklearn.preprocessing import label_binarize
-
-
-def load_data(shuffle=False):
-    new_pd_data = pd.read_csv('data/new_pd_data_full_int.csv')
-    new_pd_data.drop(labels=list(range(33916, 33916 + 255)), axis=0, inplace=True) # failed data
-    new_pd_data.drop(labels=list(range(101950, 102500 + 30000)), axis=0, inplace=True)
-    new_pd_data = new_pd_data.drop(['frame_num.1', 'Unnamed: 0', 'ref_pass.1'], axis=1)
-    if shuffle:
-        return _stratified_shuffle(new_pd_data)
-    else:
-        return new_pd_data
-
-def _load_data(data, n_prev = 10):  
+def _load_data(data, n_prev = 10):
     """
     data should be pd.DataFrame()
     """
@@ -39,24 +24,6 @@ def _load_data(data, n_prev = 10):
     alsY = np.array(docY)
     #alsY_lab = np.array(docY_lab)
     return alsX, alsY#, alsY_lab
-
-
-def _stratified_shuffle(data):
-    dfs = []
-    last_i = 0
-    for i in range(len(data)):
-        if data.iloc[i]['frame'] == 2 and last_i + 1 != i and i != 0:
-            dfs.append(data[last_i:i])
-            last_i = i
-    print len(dfs)
-    places = np.random.permutation(list(range(len(dfs))))
-
-    new_dfs = []
-
-    for i in range(len(dfs)):
-        new_dfs.append(dfs[places[i]])
-
-    return pd.concat(new_dfs)
 
 
 def train_test_split(df, test_size=0.1, n_prev=10):  
@@ -143,6 +110,7 @@ def parse_data(dump=True):
         return 'dumped'
     else:
         return data
+
 
 def load_new_data(shuffle=True):
     with open('data/data_pkl.pkl', 'r') as fi:
