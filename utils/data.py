@@ -20,7 +20,6 @@ def load_data(shuffle=False):
     else:
         return new_pd_data
 
-
 def _load_data(data, n_prev = 10):  
     """
     data should be pd.DataFrame()
