@@ -1,27 +1,29 @@
 import numpy as np
 import scipy as sp
 
+from IPython.display import clear_output
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
-
-from IPython.display import clear_output
 from utils import init_weights, model_pq, morphological_filter
-
-from theano_pq import pq_theano, pq_theano_f
-
-from IPython.display import clear_output
+from theano_pq import pq_theano
 
 
 def cv_build_model(X_train):
+    """
+    A function for building Recurrent Neural Network model with
+    predefined parameters (X_train used because of input_shape
+    parameter estimation)
 
+    :param X_train: training dataset
+    :return: model: keras neural netwok model
+    """
     model = Sequential()
     model.add(LSTM(input_dim=X_train.shape[2], output_dim=8, return_sequences=False))
     model.add(Dropout(0.5))
     model.add(Dense(16, activation='tanh'))
     model.add(Dropout(0.5))
     model.add(Dense(1, activation='tanh'))
-
-    # or with regularized_mse loss
+    # uses MSE for to optimization
     model.compile(optimizer='rmsprop', loss='MSE')
 
     return model

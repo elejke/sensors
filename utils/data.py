@@ -82,13 +82,13 @@ def train_test_split(df, test_size=0.1, n_prev=10):
     return X_train, X_test, y_train, y_test#, y_train_lab, y_test_lab
 
 
+# deprecated:
 def cv_prepare_data(data):
-    #data = load_data(shuffle=True)
     data['y'] = data.ref_pass
-    #data['y_lab'] = data['pass.1']
     data.drop(['ref_pass', 'frame_num', 'cam_num', 'cam_num.1', 'pass'], axis=1, inplace=True)
 
     return data
+
 
 def parse_data(dump=True):
 
