@@ -1,99 +1,71 @@
-
-# coding: utf-8
-
-# In[1]:
-
-import os
 import numpy as np
-import pandas as pd
+import matplotlib.pylab as plt
 
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import accuracy_score
+import theano.tensor as tt
 
-from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation, Reshape
-from keras.layers.embeddings import Embedding
-from keras.layers.recurrent import LSTM, SimpleRNN, GRU
-from keras.optimizers import RMSprop
+from keras.objectives import MSE
+from pass_quality import approx_pq
 
 
-# In[2]:
+def plot_pq(y_true, y_pred, step=1024):
+    pqs = []
+    for i in range(len(y_true) / step):
+        pqs.append(approx_pq(y_true[:i * step + step], y_pred[:i * step + step])[0])
 
-def split_by_passes(y):
-    if len(y) > 1:
-        diffs = np.diff(y)
-    else:
-        diffs = [0]
-
-    passes_starts, passes_ends = [], []
-    
-    if y[0] == 1:
-        passes_starts.append(0)
-    
-    for num, diff in enumerate(diffs):
-        if diff == 1:
-            passes_starts.append(num + 1)
-        if diff == -1:
-            passes_ends.append(num + 1)
-
-    if y[-1] == 1:
-        passes_ends.append(len(y))
-
-    return [(passes_starts[i], passes_ends[i]) for i in range(len(passes_starts))]
+    plt.plot(np.arange(len(y_true) / step), pqs)
 
 
-# In[3]:
-
-def PQ(y_true, y_pred):
-    ###
-    
-    #R_est = R(y_true, y_pred)
-    #I_est = I(y_true, y_pred)
-    #Gh_est = Gh(y_true, y_pred)
-    #return float(R_est)/(I_est + Gh_est)
-    pass
-
-
-# In[4]:
-
-def pass_quality(y_true, y_pred):
-    """Nikolaev, Malugina"""
-    
-    R_est = R(y_true, y_pred)
-    I_est = I(y_true, y_pred)
-    Gh_est = Gh(y_true, y_pred)
-    return float(R_est)/(I_est + Gh_est)
+# post_processing
+def morphological_filter(y_pred, n_times):
+    """
+    Apply morphological filter to any series of 0 and 1
+    n_times: integer:
+        number of applies
+    """
+    for i in range(n_times):
+        y_pred = np.concatenate([
+            [y_pred[0] + y_pred[1] >= 1],
+            [np.mean([y_pred[i - 1],
+                      y_pred[i],
+                      y_pred[i + 1]]) > 0.5 for i in xrange(1, len(y_pred) - 1)],
+            [y_pred[-1] + y_pred[-2] >= 1]]).astype(int)
+    return y_pred
 
 
-# In[5]:
-
-def R(y_true, y_pred):
-    right = []
-    for i, j in split_by_passes(y_true):
-        right.append(len(split_by_passes(y_pred[i:j])) == 1)
-    return np.count_nonzero(right)
+def model_pq(threshold, y_pred, y_train, sm):
+    y_pred = (y_pred > threshold).astype(int).flatten()
+    return -approx_pq(y_train, morphological_filter(y_pred, sm))[0]
 
 
-# In[6]:
+def regularized_mse(y_true, y_pred):
+    # compute Mean Squared Error:
+    mean_squared_error = MSE(y_true, y_pred)
 
-def I(y_true, y_pred):
-    return len(split_by_passes(y_true))
+    mean_squared_gradient = tt.mean((tt.extra_ops.diff(y_pred.T[-1].T)) ** 2)
 
-
-# In[7]:
-
-def Gh(y_true, y_pred):
-    right = []
-    for i, j in split_by_passes(y_pred):
-        right.append(int(len(split_by_passes(y_true[i:j])) == 0))
-    return np.count_nonzero(right)
+    return mean_squared_error * (7. / 8) + mean_squared_gradient * (1. / 8)
 
 
-def prepare_seq_data(X, seq_len=5):
-    return np.stack([X.values[seq_len-i:-i] for i in range(1, seq_len+1)], axis=1)
-
-def padding(X, y, seq_len=5):
-    return np.stack([X.values[seq_len-i:-i] for i in range(5, 0, -1)], axis=1), y[seq_len-1:]
-    #return np.stack([X.values[i:-(seq_len-i)] for i in range(seq_len)], axis=1)
-
-
+def init_weights(y_train):
+    weights = np.zeros_like(y_train) + 0.4
+    for ind in range(len(y_train[2:-2])):
+        if y_train[ind] == 1 and y_train[ind - 1] == 0 and y_train[ind - 2] == 0:
+            weights[ind + 2] += 0.2
+            weights[ind + 1] += 0.4
+            weights[ind] += 0.6
+            weights[ind - 1] += 0.4
+            weights[ind - 2] += 0.2
+        if y_train[ind] == 0 and y_train[ind - 1] == 1 and y_train[ind - 2] == 1:
+            weights[ind + 2] += 0.2
+            weights[ind + 1] += 0.4
+            weights[ind] += 0.6
+            weights[ind - 1] += 0.4
+            weights[ind - 2] += 0.2
+        if y_train[ind] == 0 and y_train[ind + 1] == 1 and y_train[ind - 1] == 1:
+            weights[ind + 2] += 0.2
+            weights[ind + 1] += 0.4
+            weights[ind] += 0.6
+            weights[ind - 1] += 0.4
+            weights[ind - 2] += 0.2
+    weights = weights / np.mean(weights)
+    return weights
