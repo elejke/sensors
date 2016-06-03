@@ -27,7 +27,7 @@ def cv_build_model(X_train, metrics=[pq_theano]):
     # or with regularized_mse loss
     model.compile(optimizer='rmsprop',
                   loss='MSE',
-                  metrics=metrics
+                  # metrics=metrics
                   )
 
     return model
