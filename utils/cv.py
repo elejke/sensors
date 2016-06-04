@@ -5,10 +5,11 @@ from IPython.display import clear_output
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
 from utils import init_weights, model_pq, morphological_filter
-from theano_pq import pq_theano
+
+from pass_quality import pass_quality
 
 
-def cv_build_model(X_train, metrics=[pq_theano]):
+def cv_build_model(X_train):#, metrics=[pq_theano]):
     """
     A function for building Recurrent Neural Network model with
     predefined parameters (X_train used because of input_shape
@@ -27,7 +28,7 @@ def cv_build_model(X_train, metrics=[pq_theano]):
     # or with regularized_mse loss
     model.compile(optimizer='rmsprop',
                   loss='MSE',
-                  # metrics=metrics
+                #  metrics=metrics
                   )
 
     return model

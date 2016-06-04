@@ -1,5 +1,5 @@
 import numpy as np
-from pass_quality import approx_pq
+from pass_quality import pass_quality
 
 
 # post_processing
@@ -32,7 +32,7 @@ def model_pq(threshold, y_pred, y_train, sm):
     :return:
     """
     y_pred = (y_pred > threshold).astype(int).flatten()
-    return -approx_pq(y_train, morphological_filter(y_pred, sm))[0]
+    return -pass_quality(y_train, morphological_filter(y_pred, sm))[0]
 
 
 def init_weights(y_train):

@@ -107,7 +107,8 @@ def parse_data(path_to_data='data/final_data/sensors_logs_correct_selected/'):
     with open('data/final_data_right.pkl', 'wb') as fi:
         pickle.dump(data_right, fi)
 
-#depricated
+
+# deprecated
 def parse_data(dump=True):
 
     columns_names = [

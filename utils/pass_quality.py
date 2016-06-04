@@ -1,4 +1,5 @@
 import numpy as np
+import os
 # import itertools
 
 
@@ -28,7 +29,7 @@ def approx_pq(y_pass, y_sig):
         height += s
         if gap(i, y_pass, y_sig):
             current_error = 1
-            r+=1
+            r += 1
         else:
             current_error += s_abs
 
@@ -41,3 +42,98 @@ def approx_pq(y_pass, y_sig):
             current_error = 0
 
     return float(r)/(r + error), r, error, (error_xs, missed)
+
+
+def pass_quality(y_test, y_pred):
+    correct = 0
+    fine = 0
+
+    if 1:#for (dirpath, dirnames, filenames) in os.walk(dir):
+        if 1:#for filename in filenames:
+            pass_state = 0
+            exp_pass = 0
+            ref_pass = 0
+            exp_group_pass_cnt = 0
+            ref_group_pass_cnt = 0
+            for i in range(len(y_test)):
+                #j = json.loads(line.split('\n')[0])
+                #j = line[-1]
+                if 1:#j['sensors'][side] != None:
+                    if exp_pass != y_pred[i]:
+                        exp_pass = y_pred[i]
+                        if exp_pass:
+                            exp_group_pass_cnt += 1
+                    if ref_pass != y_test[i]:
+                        ref_pass = y_test[i]
+                        if ref_pass:
+                            ref_group_pass_cnt += 1
+
+                    if not pass_state:
+                        if exp_pass or ref_pass:
+                            pass_state = 1
+                    else:
+                        if not exp_pass and not ref_pass:
+                            if exp_group_pass_cnt == 1 and ref_group_pass_cnt == 1:
+                                correct += 1
+                                fine += 0
+                            else:
+                                correct += 0
+                                fine += max(exp_group_pass_cnt, ref_group_pass_cnt)
+                                # print filename
+                            ref_group_pass_cnt = 0
+                            exp_group_pass_cnt = 0
+                            pass_state = 0
+                    # print '{} pass_state={}, ref_pass={},
+                            # exp_pass={}'.format(j['frame'], pass_state, ref_pass, exp_pass)
+
+    # print 'correct passes:', correct, '\nfine:', fine
+    res = 100.0 * correct / (correct + fine)
+    # print 'pass quality:', res
+    return res, correct, fine
+
+
+def pass_quality_files(data, result_colunm='res', y_column='y', dir='data/final_data/sensors_logs_correct_selected/'):
+    correct = 0
+    fine = 0
+
+    for (dirpath, dirnames, filenames) in os.walk(dir):
+        for filename in filenames:
+            pass_state = 0
+            exp_pass = 0
+            ref_pass = 0
+            exp_group_pass_cnt = 0
+            ref_group_pass_cnt = 0
+            for line in data.loc[filename].iterrows():
+                #j = json.loads(line.split('\n')[0])
+                j = line[-1]
+                if 1:#j['sensors'][side] != None:
+                    if exp_pass != j[result_colunm]:
+                        exp_pass = j[result_colunm]
+                        if exp_pass:
+                            exp_group_pass_cnt += 1
+                    if ref_pass != j[y_column]:
+                        ref_pass = j[y_column]
+                        if ref_pass:
+                            ref_group_pass_cnt += 1
+
+                    if not pass_state:
+                        if exp_pass or ref_pass:
+                            pass_state = 1
+                    else:
+                        if not exp_pass and not ref_pass:
+                            if exp_group_pass_cnt == 1 and ref_group_pass_cnt == 1:
+                                correct += 1
+                                fine += 0
+                            else:
+                                correct += 0
+                                fine += max(exp_group_pass_cnt, ref_group_pass_cnt)
+                                # print filename
+                            ref_group_pass_cnt = 0
+                            exp_group_pass_cnt = 0
+                            pass_state = 0
+                    # print '{} pass_state={}, ref_pass={}, exp_pass={}'.format(j['frame'], pass_state, ref_pass, exp_pass)
+
+    print 'correct passes:', correct, '\nfine:', fine
+    res = 100.0 * correct / (correct + fine)
+    #print 'pass quality:', res
+    return res, correct, fine
