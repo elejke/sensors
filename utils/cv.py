@@ -4,12 +4,10 @@ import scipy as sp
 from IPython.display import clear_output
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
-from utils import init_weights, model_pq, morphological_filter
-
-from pass_quality import pass_quality
+from utils import init_weights, model_pq
 
 
-def cv_build_model(X_train):#, metrics=[pq_theano]):
+def cv_build_model(X_train):
     """
     A function for building Recurrent Neural Network model with
     predefined parameters (X_train used because of input_shape
@@ -23,14 +21,14 @@ def cv_build_model(X_train):#, metrics=[pq_theano]):
     model.add(Dropout(0.5))
     model.add(Dense(16, activation='tanh'))
     model.add(Dropout(0.5))
+    model.add(Dense(8, activation='tanh'))
+    model.add(Dropout(0.5))
     model.add(Dense(1, activation='tanh'))
 
     # or with regularized_mse loss
     model.compile(optimizer='rmsprop',
                   loss='MSE',
-                #  metrics=metrics
                   )
-
     return model
 
 
@@ -44,6 +42,7 @@ def cv_fit_model(model, X_train, y_train, nb_epoch=2, weights=False):
     :param weights:
     :return:
     """
+
     if weights:
         sample_weights = init_weights(y_train)
     else:
@@ -61,12 +60,15 @@ def cv_fit_model(model, X_train, y_train, nb_epoch=2, weights=False):
     return model
 
 
-def cv_threshold(X_train, y_train, model, smooths = [0]):
+def cv_threshold(X_train, y_train, model, smooths=[0, 2, 3]):
     """
-    Returs:
-     smooth for best threshold
-     threshold for this smooth
-     """
+    Find threshold and best smooth size
+    :param X_train:
+    :param y_train:
+    :param model:
+    :param smooths:
+    :return:
+    """
     results = []
     for sm in smooths:
         y_pred = model.predict(X_train, batch_size=1024)
@@ -76,10 +78,3 @@ def cv_threshold(X_train, y_train, model, smooths = [0]):
                                                    method='bounded'))
     return (results[np.argmin([result.fun for result in results])].x,
             smooths[np.argmin([result.fun for result in results])])
-
-
-def cv_predict(model, X, y, threshold, sm=3):
-    y_pred = (model.predict(X[:], batch_size=1024) > threshold).astype(int).flatten()
-    y_pred = morphological_filter(y_pred, sm)
-    return y_pred
-

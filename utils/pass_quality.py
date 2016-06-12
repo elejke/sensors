@@ -96,8 +96,8 @@ def pass_quality_files(data, result_colunm='res', y_column='y', dir='data/final_
     correct = 0
     fine = 0
 
-    for (dirpath, dirnames, filenames) in os.walk(dir):
-        for filename in filenames:
+    if 1:#for (dirpath, dirnames, filenames) in os.walk(dir):
+        for filename in list(set(data.reset_index().name.values)):
             pass_state = 0
             exp_pass = 0
             ref_pass = 0
