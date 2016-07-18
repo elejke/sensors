@@ -4,7 +4,8 @@ import scipy as sp
 from IPython.display import clear_output
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
-from utils import init_weights, model_pq
+from utils import init_weights, morphological_filter
+from pass_quality import approx_pq
 
 
 def cv_build_model(X_train):
@@ -58,6 +59,20 @@ def cv_fit_model(model, X_train, y_train, nb_epoch=2, weights=False):
                  )
         clear_output(wait=True)
     return model
+
+
+def model_pq(threshold, y_pred, y_train, sm):
+    """
+    Smoothed model pass_quality function estimator.
+
+    :param threshold:
+    :param y_pred:
+    :param y_train:
+    :param sm:
+    :return:
+    """
+    y_pred = (y_pred > threshold).astype(int).flatten()
+    return -approx_pq(y_train, morphological_filter(y_pred, sm))[0]
 
 
 def cv_threshold(X_train, y_train, model, smooths=[0, 2, 3]):

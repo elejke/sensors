@@ -15,12 +15,12 @@ def add_prev(data, n_prev=45):
     :return:
     """
     X = data.drop(['y'], axis=1).as_matrix()
-    #X_pad = np.zeros(X.shape[-1] * (n_prev - 1)).reshape(n_prev - 1, X.shape[-1])
-    #X = np.concatenate([X_pad, X], axis=0)
+#    X_pad = np.zeros(X.shape[-1] * (n_prev - 1)).reshape(n_prev - 1, X.shape[-1])
+#    X = np.concatenate([X_pad, X], axis=0)
 
-    #y_pad = np.zeros(n_prev - 1)
+#    y_pad = np.zeros(n_prev - 1)
     y = data['y'].values
-    #y = np.concatenate([y_pad, y], axis=0)
+#    y = np.concatenate([y_pad, y], axis=0)
 
     doc_x, doc_y = [], []
 
@@ -138,8 +138,6 @@ def load_data():
         df1.columns = ['name', 'frame', 'shield', 'loop', 'cor', 'pass', 'y']
         data_right_new.append(df1)
 
-
-
     data = [df for df in data_left_new]
     for df in data_right_new:
         data.append(df)
@@ -149,12 +147,9 @@ def load_data():
     data_new = []
 
     for i in np.random.permutation(len(data)):
-        data_new.append(data[i])
-        data_new.append(pd.DataFrame(data=[np.zeros(len(data[i].columns))], columns=data[i].columns))
+            data_new.append(data[i])
+            data_new.append(pd.DataFrame(data=[np.zeros(len(data[i].columns))], columns=data[i].columns))
     data = data_new
-
-    #for df in data:
-    #    df['frame_diff'] = np.concatenate([[0], np.diff(df.reset_index()['frame'].values)])
 
     conc_data = pd.concat(data)
     conc_data.set_index(['name', 'frame'], inplace=True)

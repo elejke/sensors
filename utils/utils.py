@@ -16,23 +16,30 @@ def morphological_filter(y_pred, n_times):
             [y_pred[0] + y_pred[1] >= 1],
             [np.mean([y_pred[i - 1],
                       y_pred[i],
-                      y_pred[i + 1]]) > 0.5 for i in xrange(1, len(y_pred) - 1)],
-            [y_pred[-1] + y_pred[-2] >= 1]]).astype(int)
+                      y_pred[i + 1]]) >= 0.5 for i in xrange(1, len(y_pred) - 1)],
+            [y_pred[-2] + y_pred[-1] >= 1]]).astype(int)
     return y_pred
 
 
-def model_pq(threshold, y_pred, y_train, sm):
+# post_processing
+def morphological_filter_fair(y_pred, n_times):
     """
-    Smoothed model pass_quality function estimator.
+    Apply morphological filter to any series of 0 and 1
 
-    :param threshold:
     :param y_pred:
-    :param y_train:
-    :param sm:
+    :param n_times:
     :return:
     """
-    y_pred = (y_pred > threshold).astype(int).flatten()
-    return -approx_pq(y_train, morphological_filter(y_pred, sm))[0]
+    for i in range(n_times):
+        y_pred = np.concatenate([
+            [y_pred[0] + y_pred[1] >= 1],
+            [y_pred[1] + y_pred[2] >= 1],
+            [np.mean([y_pred[i - 2],
+                      y_pred[i - 1],
+                      y_pred[i]]) >= 0.5 for i in xrange(2, len(y_pred))]]).astype(int)
+            #[y_pred[-1] + y_pred[-2] >= 1]]).astype(int)
+    return y_pred
+
 
 def init_weights(y_train):
     """
